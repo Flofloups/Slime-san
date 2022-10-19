@@ -15,7 +15,7 @@ public class control_V3 : MonoBehaviour
 
     public Rigidbody2D rb;
     public SpriteRenderer skin;
-    //private Animator animatotor;
+    private Animator animatotor;
     private Collider2D monCollider;
 
     [HideInInspector]public bool hooking;
@@ -27,7 +27,7 @@ public class control_V3 : MonoBehaviour
         rb = gameObject.GetComponent<Rigidbody2D>();
         skin = gameObject.GetComponent<SpriteRenderer>();
         monCollider = gameObject.GetComponent<Collider2D>();
-        //animatotor = gameObject.GetComponent<Animator>();
+        animatotor = gameObject.GetComponent<Animator>();
 
         rb.freezeRotation = true;
         Physics2D.queriesStartInColliders = false;
@@ -85,10 +85,10 @@ public class control_V3 : MonoBehaviour
             rb.AddForce (new Vector2 (Input.GetAxisRaw("Horizontal") * speed/2, 0));
         }
 
-        // if (animatotor != null) {
-        //     animatotor.SetFloat("velocityX", Mathf.Abs(rb.velocity.x));
-        //     animatotor.SetFloat("velocityY", rb.velocity.y);
-        // }
+        if (animatotor != null) {
+            animatotor.SetFloat("velocityX", Mathf.Abs(rb.velocity.x));
+            animatotor.SetFloat("velocityY", rb.velocity.y);
+        }
     }
 
     void jumpCheck() {
@@ -97,10 +97,10 @@ public class control_V3 : MonoBehaviour
         Debug.DrawRay(transform.position, -Vector2.up * (monCollider.bounds.extents.y + Mathf.Abs(monCollider.offset.y) * transform.localScale.y) * longueurCheckJump, Color.red);
         if (hit && !hit.collider.isTrigger){
             canJump = true;
-            //animatotor.SetBool("jump", false);
+            animatotor.SetBool("jump", false);
         } else{
             canJump = false;
-            //animatotor.SetBool("jump", true);
+            animatotor.SetBool("jump", true);
         }
     }
 
