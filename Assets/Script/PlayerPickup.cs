@@ -6,7 +6,7 @@ public class PlayerPickup : MonoBehaviour
 {
     [SerializeField] private SweetCounter counter;
 
-    private void PickSweet()
+    public void PickSweet()
     {
         counter.PickSweet();
     }
