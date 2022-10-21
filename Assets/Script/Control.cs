@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class control_V3 : MonoBehaviour
+public class Control : MonoBehaviour
 {
     public float speed = 5f;
     public float jump = 8f;
@@ -15,8 +15,11 @@ public class control_V3 : MonoBehaviour
 
     public Rigidbody2D rb;
     public SpriteRenderer skin;
-    //private Animator animatotor;
+    private Animator animatotor;
     private Collider2D monCollider;
+
+    [SerializeField] Transform groundcheck;
+    [SerializeField] float _raycastLength;
 
     [HideInInspector]public bool hooking;
     private bool dashing;
@@ -27,7 +30,7 @@ public class control_V3 : MonoBehaviour
         rb = gameObject.GetComponent<Rigidbody2D>();
         skin = gameObject.GetComponent<SpriteRenderer>();
         monCollider = gameObject.GetComponent<Collider2D>();
-        //animatotor = gameObject.GetComponent<Animator>();
+        animatotor = gameObject.GetComponent<Animator>();
 
         rb.freezeRotation = true;
         Physics2D.queriesStartInColliders = false;
@@ -85,23 +88,30 @@ public class control_V3 : MonoBehaviour
             rb.AddForce (new Vector2 (Input.GetAxisRaw("Horizontal") * speed/2, 0));
         }
 
-        // if (animatotor != null) {
-        //     animatotor.SetFloat("velocityX", Mathf.Abs(rb.velocity.x));
-        //     animatotor.SetFloat("velocityY", rb.velocity.y);
-        // }
+        if (animatotor != null) {
+             animatotor.SetFloat("velocityX", Mathf.Abs(rb.velocity.x));
+             animatotor.SetFloat("velocityY", rb.velocity.y);
+         }
     }
 
     void jumpCheck() {
-        hit = Physics2D.Raycast(transform.position, -Vector2.up, (monCollider.bounds.extents.y + Mathf.Abs(monCollider.offset.y) * transform.localScale.y) * longueurCheckJump);
+        // hit = Physics2D.Raycast(transform.position, -Vector2.up, (monCollider.bounds.extents.y + Mathf.Abs(monCollider.offset.y) * transform.localScale.y) * longueurCheckJump);
+        // Debug.DrawRay(transform.position, -Vector2.up * (monCollider.bounds.extents.y + Mathf.Abs(monCollider.offset.y) * transform.localScale.y) * longueurCheckJump, Color.red);
+        // if (hit && !hit.collider.isTrigger){
+        //     canJump = true;
+        //     animatotor.SetBool("jump", false);
+        // } else{
+        //     canJump = false;
+        //     animatotor.SetBool("jump", true);
+        // }
 
-        Debug.DrawRay(transform.position, -Vector2.up * (monCollider.bounds.extents.y + Mathf.Abs(monCollider.offset.y) * transform.localScale.y) * longueurCheckJump, Color.red);
-        if (hit && !hit.collider.isTrigger){
-            canJump = true;
-            //animatotor.SetBool("jump", false);
-        } else{
-            canJump = false;
-            //animatotor.SetBool("jump", true);
-        }
+        var dir = -Vector2.up * _raycastLength;
+        var hit = Physics2D.Raycast(groundcheck.position, dir, _raycastLength, LayerMask.GetMask("Env"));
+
+        Debug.DrawRay(groundcheck.position, dir, hit.collider != null ? Color.green : Color.red);
+        animatotor.SetBool("jump", hit.collider == null);
+        canJump = hit.collider != null;
+
     }
 
     void lookCheck() {

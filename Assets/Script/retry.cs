@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class retry : MonoBehaviour
+public class Retry : MonoBehaviour
 {
     public Button RetryButton;
 
