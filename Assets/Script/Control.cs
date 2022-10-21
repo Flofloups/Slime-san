@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class control_V3 : MonoBehaviour
+public class Control : MonoBehaviour
 {
     public float speed = 5f;
     public float jump = 8f;
