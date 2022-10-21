@@ -9,6 +9,7 @@ public class NewBehaviourScript : MonoBehaviour
         if(other.CompareTag("Player"))
         {
             Destroy(gameObject);
+
         }
     }
 }
