@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class NewBehaviourScript : MonoBehaviour
 {
+    private SpriteRenderer sprite;
     private void OnTriggerEnter2D(Collider2D other)
     {
         if(other.CompareTag("Player"))
         {
-            Destroy(gameObject);
+            other.GetComponent(PlayerPickup).PickSweet();
+            GameObject.Destroy(gameObject);
         }
     }
 }
